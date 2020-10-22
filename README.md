@@ -30,7 +30,7 @@ const { uuid } = require('uuidv4');
 const { google } = require('googleapis');
 const bodyparser = require('body-parser');
 
-const GoogleStorage = require('../google-drive-storage');
+const GoogleStorage = require('google-drive-storage');
 
 const auth = new google.auth.GoogleAuth({
     keyFile: './your-google-service-account-key-file.json',
