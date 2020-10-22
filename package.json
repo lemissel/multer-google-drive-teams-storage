@@ -1,0 +1,30 @@
+{
+  "name": "multer-google-drive-teams-storage",
+  "version": "1.0.0",
+  "description": "Multer Storage for upload files to Google Drive Teams",
+  "main": "google-drive-teams-storage.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "multer",
+    "storage",
+    "upload",
+    "files",
+    "google",
+    "drive",
+    "google",
+    "drive",
+    "teams"
+  ],
+  "author": "Leandro Missel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lemissel/multer-google-drive-teams-storage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lemissel/multer-google-drive-teams-storage/issues"
+  },
+  "homepage": "https://github.com/lemissel/multer-google-drive-teams-storage#readme"
+}
