@@ -93,11 +93,21 @@ filename | A function with req, file and callback params to modifies the strateg
 
 ## IMPORTANT
 
-When you use other fields to specify the 
+When you use other fields in body request to specify the driveId or filename of the file, leave the file (contains the binary information) in the last position of your payload.
 
 Part of the multer documentation:
 
 >Note that req.body might not have been fully populated yet. It depends on the order that the client transmits fields and files to the server.
+
+### Example
+
+```JSON
+{
+    "custom_driveId": "89a7df87hadf7h87asdf87h",
+    "custom_filename": "filename_xpto",
+    "file": ...
+}
+```
 
 ## F.A.Q.
 

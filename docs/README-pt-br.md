@@ -91,7 +91,23 @@ drive | Um objeto 'drive' já autenticado pela [googleapis](https://github.com/g
 driveId | Uma função com os parâmetros req, res e callback para especificar o ID do diretório (fornecido pelo Google Drive). Padrão: root | função | SIM
 filename | Uma função com os parametrôs req, res e callback para modificar a estratégia do nome do arquivo. Padrão: nome original do arquivo | função | NÃO
 
+## IMPORTANTE
 
+Quando você usa outros campos no corpo da requisição (req.body) para especificaar o driveId ou nome do arquivo, deixe o campo de arquivo (que contém as informações do arquivo) na última posição da sua carga de dados (payload).
+
+Parte da documentação do Multer:
+
+>Observe que req.body pode não ter sido totalmente preenchido ainda. Depende da ordem em que o cliente transmite campos e arquivos para o servidor.
+
+### Exemplo
+
+```JSON
+{
+    "custom_driveId": "89a7df87hadf7h87asdf87h",
+    "custom_filename": "filename_xpto",
+    "file": ...
+}
+```
 
 ## F.A.Q.
 
