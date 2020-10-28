@@ -53,7 +53,12 @@ app.use(bodyparser.urlencoded({ limit: '50mb', extended: false }))
 const upload = multer({
     storage: GoogleStorage({
         drive: drive,
-        driveId: '1iaudFygUYG_GKgkgKGJHGhjghjghjgtirtrduu',
+        driveId: function (req, file, callback) { 
+
+            const destination = (req) ? req.body.driveId : null;
+
+            callback(null, destination);
+        },
         filename: function (req, file, callback) {
 
             const fileName = `${uuid()}-${file.originalname}`;
@@ -83,8 +88,8 @@ A seguir estão as opções que você deverá passar para GoogleDriveTeamsStorag
 Chave         | Descrição | Tipo | Requerido |
 ----------- | ---------- | --------| -------|
 drive | Um objeto 'drive' já autenticado pela [googleapis](https://github.com/googleapis). | Objeto | SIM
-driveId | O id do diretório que você quer colocar o arquivo. | string | SIM
-filename | uma função com os parametrôs req, res e callback para modificar a estratégia do nome do arquivo. Padrão: nome original do arquivo | função | NÃO
+driveId | Uma função com os parâmetros req, res e callback para especificar o ID do diretório (fornecido pelo Google Drive). Padrão: root | função | SIM
+filename | Uma função com os parametrôs req, res e callback para modificar a estratégia do nome do arquivo. Padrão: nome original do arquivo | função | NÃO
 
 
 

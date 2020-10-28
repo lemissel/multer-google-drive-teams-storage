@@ -53,7 +53,12 @@ app.use(bodyparser.urlencoded({ limit: '50mb', extended: false }))
 const upload = multer({
     storage: GoogleStorage({
         drive: drive,
-        driveId: '1iaudFygUYG_GKgkgKGJHGhjghjghjgtirtrduu',
+        ddriveId: function (req, file, callback) { 
+
+            const destination = (req) ? req.body.driveId : null;
+
+            callback(null, destination);
+        },
         filename: function (req, file, callback) {
 
             const fileName = `${uuid()}-${file.originalname}`;
@@ -83,10 +88,16 @@ The following are the options that should be passaed to GoogleDriveTeamsStorage.
 Key         | Decription | Type | Required |
 ----------- | ---------- | ---- | -------- |
 drive | A drive object already authenticated provided by [googleapis](https://github.com/googleapis). | object | YES 
-parent | The id of the folder what you want to put your file. | string | YES
+driveId | A function with req, file, and callback params to specify the drive ID (by Google Drive). Default: root | function | YES
 filename | A function with req, file and callback params to modifies the strategy of the filename. Default: original filename | function | NO
 
+## IMPORTANT
 
+When you use other fields to specify the 
+
+Part of the multer documentation:
+
+>Note that req.body might not have been fully populated yet. It depends on the order that the client transmits fields and files to the server.
 
 ## F.A.Q.
 
