@@ -2,16 +2,38 @@ function getFilename(req, file, cb) {
     cb(null, file.originalname);
 }
 
+function getDriveId(req, file, cb) {
+    cb(null, 'root');
+}
+
 function GoogleDriveStorage(opts) {
 
+    drive = opts.drive;
     this.getFilename = opts.filename || getFilename;
 
-    drive = opts.drive;
-    driveId = opts.driveId;
+
+    // ATTENTION:
+    //
+    // Fallback to legacy version (v1.0.0) to continue accept string type.
+    // This fallback will be deprecated soon
+    if (typeof opts.driveId === 'function') {
+        this.getDriveId = opts.driveId || getDriveId;
+    }
+    else {
+        GoogleDriveStorage.prototype.driveId = opts.driveId;
+    }
+
+    
 }
 
 
 GoogleDriveStorage.prototype._handleFile = function _handleFile(req, file, cb) {
+
+    if (!GoogleDriveStorage.prototype.driveId) {
+        this.getDriveId(req, file, (err, driveId) => {
+            GoogleDriveStorage.prototype.driveId = driveId;
+        });
+    }
 
     this.getFilename(req, file, function (err, filename) {
         if (err) return cb(err);
@@ -19,8 +41,8 @@ GoogleDriveStorage.prototype._handleFile = function _handleFile(req, file, cb) {
         drive.files.create({
             resource: {
                 name: filename,
-                driveId,
-                parents: [driveId],
+                driveId: GoogleDriveStorage.prototype.driveId,
+                parents: [GoogleDriveStorage.prototype.driveId],
                 mimeType: file.mimetype
             },
             media: {
@@ -33,7 +55,6 @@ GoogleDriveStorage.prototype._handleFile = function _handleFile(req, file, cb) {
         { maxRedirects: 0 }
         )
         .then(file => {
-            // console.log('File results: ', driveId, parents, file.data.name, file.data.id, file.data.webViewLink);
             cb(null, {
                 filename: file.data.name,
                 fileId: file.data.id,
